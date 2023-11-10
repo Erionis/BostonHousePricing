@@ -14,7 +14,7 @@ scalar=pickle.load(open('scaling.pkl','rb')) # load the scalar model
 # Home page ROOT
 @app.route('/')
 def home():
-    return render_template('home2.html')
+    return render_template('home.html')
 
 # create a predict api 
 @app.route('/predict_api',methods=['POST']) # POST request
@@ -29,13 +29,13 @@ def predict_api():
 
 
 
-# @app.route('/predict',methods=['POST'])
-# def predict():
-#     data=[float(x) for x in request.form.values()]
-#     final_input=scalar.transform(np.array(data).reshape(1,-1))
-#     print(final_input)
-#     output=regmodel.predict(final_input)[0]
-#     return render_template("home.html",prediction_text="The House price prediction is {}".format(output))
+@app.route('/predict',methods=['POST'])
+def predict(): # create a predict function
+    data=[float(x) for x in request.form.values()] # transform the data into float format
+    final_input=scalar.transform(np.array(data).reshape(1,-1)) # scale the data
+    print(final_input) # print the data
+    output=regmodel.predict(final_input)[0] # predict the data
+    return render_template("home.html",prediction_text="The House price prediction is {}".format(output)) # return the output
 
 
 
